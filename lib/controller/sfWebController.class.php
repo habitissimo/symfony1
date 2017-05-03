@@ -144,11 +144,11 @@ abstract class sfWebController extends sfController
     {
       $matched = preg_match_all('/
         ([^&=]+)            # key
-        =                   # =
+        (?:=                # =
         (.*?)               # value
         (?:
           (?=&[^&=]+=) | $  # followed by another key= or the end of the string
-        )
+        ))?
       /x', $queryString, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
       foreach ($matches as $match)
       {

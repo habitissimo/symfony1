@@ -100,8 +100,10 @@ HED;
       $content = <<<HED
 <?php
 
-class $taskClassName extends sfBaseTask
+class $taskClassName extends HabBaseTask
 {
+  use InterruptibleTask;
+
   protected function configure()
   {
     // // add your own arguments here
@@ -127,10 +129,27 @@ EOF;
   protected function execute(\$arguments = array(), \$options = array())
   {
     // initialize the database connection
-    \$databaseManager = new sfDatabaseManager(\$this->configuration);
-    \$connection = \$databaseManager->getDatabase(\$options['connection'])->getConnection();
+    \$connection = \$this->getConnection();
 
-    // add your code here
+    // initalize signal support (SIGTERM and SIGINT)
+    \$this->configureSignals();
+
+    // ADD YOUR CODE HERE:
+    // here is a sample of code which respects database integrity if something goes
+    // wrong or the task is interrumpted by the user.
+    \$connection->beginTransaction();
+    foreach (\$foobar as \$foo) {
+      if (\$this->interrupt) {
+        // the flag \$this->interrupt is handled by the InterruptibleTask trait
+        \$connection->rollBack();
+        exit(0);
+      }
+      // do your stuff with \$foo
+    }
+
+    // beware of huge transactions, it may be preferrible to implement batches of
+    // small transactions if you are going to do huge changes
+    \$connection->commit();
   }
 }
 

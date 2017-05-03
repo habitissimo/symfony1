@@ -51,7 +51,8 @@ abstract class sfValidatorBase
   public function __construct($options = array(), $messages = array())
   {
     $this->options  = array_merge(array('required' => true, 'trim' => true, 'empty_value' => null), $this->options);
-    $this->messages = array_merge(array('required' => self::$globalDefaultMessages['required'], 'invalid' => self::$globalDefaultMessages['invalid']), $this->messages);
+    $this->messages = array_merge(array('required' => static::$globalDefaultMessages['required'], 'invalid' => static::$globalDefaultMessages['invalid']), $this->messages);
+
 
     $this->configure($options, $messages);
 
@@ -124,7 +125,7 @@ abstract class sfValidatorBase
    */
   public function addMessage($name, $value)
   {
-    $this->messages[$name] = isset(self::$globalDefaultMessages[$name]) ? self::$globalDefaultMessages[$name] : $value;
+    $this->messages[$name] = isset(static::$globalDefaultMessages[$name]) ? static::$globalDefaultMessages[$name] : $value;
 
     return $this;
   }
@@ -168,7 +169,7 @@ abstract class sfValidatorBase
    */
   public function setMessages($values)
   {
-    $this->messages = array_merge(array('required' => self::$globalDefaultMessages['required'], 'invalid' => self::$globalDefaultMessages['invalid']), $values);
+    $this->messages = array_merge(array('required' => static::$globalDefaultMessages['required'], 'invalid' => static::$globalDefaultMessages['invalid']), $values);
 
     return $this;
   }

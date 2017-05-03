@@ -161,7 +161,8 @@ class sfMemcacheCache extends sfCache
   {
     if (sfCache::ALL === $mode)
     {
-      return $this->memcache->flush();
+      // Removed to avoid Memcache flush on every symfony cc
+      //return $this->memcache->flush();
     }
   }
 

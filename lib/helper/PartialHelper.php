@@ -273,7 +273,8 @@ function end_slot()
   $slot_names = sfConfig::get('symfony.view.slot_names', array());
   if (!$slot_names)
   {
-    throw new sfCacheException('No slot started.');
+    return;
+    //throw new sfCacheException('No slot started.');
   }
 
   $name = array_pop($slot_names);

@@ -331,7 +331,7 @@ function sfWebDebugToggleMenu()
     }
     for (var i = 0; i < mainCacheElements.length; ++i)
     {
-      mainCacheElements[i].style.border = 'none';
+      mainCacheElements[i].style.outline = 'none';
     }
   }
   else
@@ -342,7 +342,7 @@ function sfWebDebugToggleMenu()
     }
     for (var i = 0; i < mainCacheElements.length; ++i)
     {
-      mainCacheElements[i].style.border = '1px solid #f00';
+      mainCacheElements[i].style.outline = '1px solid #f00';
     }
   }
 
