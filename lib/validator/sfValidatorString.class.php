@@ -18,6 +18,9 @@
  */
 class sfValidatorString extends sfValidatorBase
 {
+  protected static
+    $globalDefaultMessages = array('invalid' => 'Invalid.', 'required' => 'Required.');
+
   /**
    * Configures the current validator.
    *

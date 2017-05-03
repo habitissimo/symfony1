@@ -90,7 +90,7 @@ class sfSessionStorage extends sfStorage
       session_cache_limiter($this->options['session_cache_limiter']);
     }
 
-    if ($this->options['auto_start'] && !self::$sessionStarted)
+    if ($this->options['auto_start'] && !self::$sessionStarted && php_sapi_name() !== 'cli')
     {
       session_start();
       self::$sessionStarted = true;

@@ -70,6 +70,17 @@ class sfPHPView extends sfView
     ob_start();
     ob_implicit_flush(0);
 
+    // This strange hack is because requiring a non-accesible file generates
+    // a fatal non-recoverable «compile error».
+    // This kind of URL generate error codes 500
+    // http://backend.habitissimo.es.test/email_template/575/%7B%7B%20viral_post.url%20%7D%7D
+    if (!file_exists($_sfFile)) {
+      throw new sfError404Exception("File {$_sfFile} not found");
+    }
+    if (!is_file($_sfFile)) {
+      throw new sfError404Exception("File {$_sfFile} is not ordinary file");
+    }
+
     try
     {
       require($_sfFile);

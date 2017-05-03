@@ -53,8 +53,11 @@ class sfWebDebugPanelConfig extends sfWebDebugPanel
     $html .= $this->formatArrayAsHtml('request',  sfDebug::requestAsArray($context->getRequest()));
     $html .= $this->formatArrayAsHtml('response', sfDebug::responseAsArray($context->getResponse()));
     $html .= $this->formatArrayAsHtml('user',     sfDebug::userAsArray($context->getUser()));
+    if (retrieve_env() !== 'prod') {
+      // Sensitive information here, for developers eyes only
     $html .= $this->formatArrayAsHtml('settings', sfDebug::settingsAsArray());
     $html .= $this->formatArrayAsHtml('globals',  sfDebug::globalsAsArray());
+    }
     $html .= $this->formatArrayAsHtml('php',      sfDebug::phpInfoAsArray());
     $html .= $this->formatArrayAsHtml('symfony',  sfDebug::symfonyInfoAsArray());
 

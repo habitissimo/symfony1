@@ -112,6 +112,10 @@ class sfWebRequest extends sfRequest
           {
             parse_str($this->getContent(), $postParameters);
           }
+          elseif ('application/json' === $this->getContentType())
+          {
+            $postParameters = json_decode($this->getContent(), true);
+          }
           break;
 
         case 'PATCH':
@@ -119,6 +123,10 @@ class sfWebRequest extends sfRequest
           if ('application/x-www-form-urlencoded' === $this->getContentType())
           {
             parse_str($this->getContent(), $postParameters);
+          }
+          elseif ('application/json' === $this->getContentType())
+          {
+            $postParameters = json_decode($this->getContent(), true);
           }
           break;
 
