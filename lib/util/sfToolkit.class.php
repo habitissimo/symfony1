@@ -348,14 +348,18 @@ class sfToolkit
    */
   public static function replaceConstants($value)
   {
-    if (!is_string($value))
-    {
-      return $value;
-    }
-
-    return preg_replace_callback('/%(.+?)%/', function ($v) {
+    $value = is_string($value) ? preg_replace_callback('/%(.+?)%/', function ($v) {
       return sfConfig::has(strtolower($v[1])) ? sfConfig::get(strtolower($v[1])) : '%'.$v[1].'%';
-    }, $value);
+    }, $value) : $value;
+
+    // Added support for environment variables on config files
+    $value = is_string($value) ? preg_replace_callback('/\$\{(.+?)(:-(.+?))?\}/', function ($v) {
+      $fallback = isset($v[3]) ? $v[3] : '${'.$v[1].'}';
+
+      return getenv($v[1]) ? getenv($v[1]) : $fallback;
+    }, $value) : $value;
+
+    return $value;
   }
 
   /**

@@ -105,7 +105,7 @@ class sfException extends Exception
         ob_start('ob_gzhandler');
       }
 
-      header('HTTP/1.0 500 Internal Server Error');
+      if (!headers_sent()) header('HTTP/1.0 500 Internal Server Error');
     }
 
     if (version_compare(PHP_VERSION, '7.0.0') >= 0)
@@ -177,7 +177,7 @@ class sfException extends Exception
       {
         foreach ($response->getHttpHeaders() as $name => $value)
         {
-          header($name.': '.$value);
+          if (!headers_sent()) header($name.': '.$value);
         }
       }
 
@@ -198,7 +198,7 @@ class sfException extends Exception
     else
     {
       // a backward compatible default
-      if (!sfConfig::get('sf_test'))
+      if (!sfConfig::get('sf_test') && 'cli' !== PHP_SAPI)
       {
         header('Content-Type: text/html; charset='.sfConfig::get('sf_charset', 'utf-8'));
       }
@@ -238,7 +238,7 @@ class sfException extends Exception
       $globalsTable  = self::formatArrayAsHtml(sfDebug::globalsAsArray());
     }
 
-    if (isset($response) && $response)
+    if (isset($response) && $response && PHP_SAPI !== 'cli')
     {
       $response->sendHttpHeaders();
     }

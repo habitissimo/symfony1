@@ -16,7 +16,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
-class sfCacheClearTask extends sfBaseTask
+class sfCacheClearTask extends HabBaseTask
 {
   protected
     $config = null;
@@ -29,7 +29,7 @@ class sfCacheClearTask extends sfBaseTask
     $this->addOptions(array(
       new sfCommandOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', null),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'The environment', null),
-      new sfCommandOption('type', null, sfCommandOption::PARAMETER_OPTIONAL, 'The type', 'all'),
+      new sfCommandOption('type', null, sfCommandOption::PARAMETER_OPTIONAL, 'The type', 'custom'),
     ));
 
     $this->aliases = array('cc');
@@ -134,13 +134,21 @@ EOF;
     return sprintf('clear%sCache', ucfirst($type));
   }
 
+  protected function clearCustomCache(sfApplicationConfiguration $appConfiguration)
+  {
+    $this->clearI18NCache($appConfiguration);
+    $this->clearRoutingCache($appConfiguration);
+    $this->clearModuleCache($appConfiguration);
+    $this->clearConfigCache($appConfiguration);
+  }
+
   protected function clearAllCache(sfApplicationConfiguration $appConfiguration)
   {
     $this->clearI18NCache($appConfiguration);
     $this->clearRoutingCache($appConfiguration);
-    $this->clearTemplateCache($appConfiguration);
     $this->clearModuleCache($appConfiguration);
     $this->clearConfigCache($appConfiguration);
+    $this->clearTemplateCache($appConfiguration);
   }
 
   protected function clearConfigCache(sfApplicationConfiguration $appConfiguration)

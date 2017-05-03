@@ -202,4 +202,20 @@ EOF;
 
     return array_unique(array_merge(sfFinder::type('dir')->maxdepth(0)->follow_link()->relative()->in($dirs), $modules));
   }
+
+  /**
+   * Workaround added to force cache genration for prod,
+   * before the fix the environment argument was ignored and used the
+   * default value 'test'.
+   *
+   * This will avoid the performance hit we used to suffer on deploys.
+   */
+  protected function createConfiguration($application, $env)
+  {
+    if (null !== $application) {
+      $env = 'prod';
+    }
+
+    return parent::createConfiguration($application, $env);
+  }
 }
