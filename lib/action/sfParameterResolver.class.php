@@ -32,7 +32,7 @@ class sfParameterResolver
 
     $parameters = [];
     foreach ($method->getParameters() as $i => $param) {
-      $type = $param->getType();
+      $type = $param->getClass();
 
       // handle case where request parameter was not type hinted
       if (null === $type && $i === 0) {
