@@ -57,6 +57,9 @@ abstract class sfActions extends sfAction
     }
 
     // run action
-    return $this->$actionToRun($request);
+    return $this->getService('sf_parameter_resolver')
+      ->setRequest($request)
+      ->setComponent($this)
+      ->execute($actionToRun);
   }
 }
